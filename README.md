@@ -8,7 +8,7 @@ A database-centric project for storing, querying, and interacting with IMDb movi
 
 1. [Project Workflow](#project-workflow)
 2. [Team Responsibilities](#team-responsibilities)
-3. [Progress & Implemented Features](#progress--implemented-features)
+3. [Progress & Implemented Features](#Completed)
 4. [Next Steps](#next-steps)
 5. [Development Run Order](#development-run-order)
 
@@ -37,9 +37,9 @@ Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert int
 | Area            | Files/Functions                | Assigned To | Status     | Details/Notes                      |
 |-----------------|-------------------------------|-------------|------------|------------------------------------|
 | Database Schema | `schema.sql`, `init_db.py`    | Juno        | ✅ Done     |                                    |
-| Data Insertion  | `insert_data.py`              | Juno: Reviews + Studio/Awards<br>(others: see below) | Partial | See [Next Steps](#next-steps)      |
-| Query Layer     | `queries.py`                  | *Unassigned*| ⬜ Todo     |                                    |
-| GUI             | `gui.py`, `app.py`            | *Unassigned*| ⬜ Todo     |                                    |
+| Data Insertion  | `insert_data.py`              | Juno: Reviews Insert + Studio/Awards<br>(others: see below) | Partial | See [Next Steps](#next-steps)      |
+| Query Layer     | `queries.py`                  | *Unassigned*| Todo     |                                    |
+| GUI             | `gui.py`, `app.py`            | *Unassigned*| Todo     |                                    |
 
 **Data Insertion (details):**
   - **Juno:** Reviews insert, studio and award lists (DONE)
@@ -47,9 +47,9 @@ Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert int
 
 ---
 
-## 3. Progress & Implemented Features
+## 3. Completed
 
-### ✔️ Data Filtering Pipeline (`filter_data.py`)
+### Data Filtering Pipeline (`filter_data.py`)
 
 - **Purpose:** Process and reduce IMDb raw data into cleaned, subsetted files in `filtered_data/`.
 - **Output Files:**
@@ -65,7 +65,7 @@ Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert int
   3. Filter related tables via `tconst`  
   4. Extract and filter all required `nconst`s for consistency
 
-### ✔️ Review Processing & Insertion
+### Review Processing & Insertion
 
 - **Source:** `filtered_data/imdb_reviews.csv` (Kaggle 50k IMDB reviews)
 - **Process:**
@@ -78,7 +78,7 @@ Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert int
     - `post_time` (2019–2024)
 - **Insertion:** Fully implemented in `insert_data.py → insert_reviews()`
 
-### ✔️ Studio & Award Dictionaries
+### Studio & Award Dictionaries
 
 - Ready-made lists in `insert_data.py`:
   - `STUDIO_LIST`: Popular studios
