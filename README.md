@@ -8,9 +8,9 @@ A database-centric project for storing, querying, and interacting with IMDb movi
 
 1. [Project Workflow](#project-workflow)
 2. [Team Responsibilities](#team-responsibilities)
-3. [Progress & Implemented Features](#Completed)
+3. [Completed Features](#completed)
 4. [Next Steps](#next-steps)
-5. [Development Run Order](#development-run-order)
+5. [Development & Run Order](#development-run-order)
 
 ---
 
