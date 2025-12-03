@@ -39,7 +39,7 @@ Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert int
 | Database Schema | `schema.sql`, `init_db.py`    | Juno        | Done     |                                    |
 | Data Insertion  | `insert_data.py`              | Juno: Reviews Insert + Studio/Awards<br>(others: see below) | Partial | See [Next Steps](#next-steps)      |
 | Query Layer     | `queries.py`                  | *Unassigned*| Todo     |                                    |
-| GUI             | `gui.py`, `app.py`            | *Unassigned*| Todo     |                                    |
+| GUI             | `gui.py`, `app.py`            | Zhenyan| in Progress     |                                    |
 
 **Data Insertion (details):**
   - **Juno:** Reviews insert, studio and award lists (DONE)
