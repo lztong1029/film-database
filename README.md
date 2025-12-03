@@ -34,16 +34,16 @@ Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert int
 
 ## 2. Team Responsibilities
 
-| Area            | Files/Functions                | Assigned To | Status     | Details/Notes                      |
-|-----------------|-------------------------------|-------------|------------|------------------------------------|
-| Database Schema | `schema.sql`, `init_db.py`    | Juno        | Done     |                                    |
-| Data Insertion  | `insert_data.py`              | Juno: Reviews Insert + Studio/Awards<br>(others: see below) | Partial | See [Next Steps](#next-steps)      |
-| Query Layer     | `queries.py`                  | *Unassigned*| Todo     |                                    |
-| GUI             | `gui.py`, `app.py`            | Zhenyan| in Progress     |                                    |
+| Area            | Files/Functions                | Assigned To                                                                                           | Status      | Details/Notes                      |
+|-----------------|-------------------------------|-------------------------------------------------------------------------------------------------------|-------------|------------------------------------|
+| Database Schema | `schema.sql`, `init_db.py`    | Juno                                                                                                  | Done        |                                    |
+| Data Insertion  | `insert_data.py`              | Juno: Reviews Insert + Studio/Awards<br>(others: see below)<br/>Yilin: Completed remaining insertions | Done        | See [Next Steps](#next-steps)      |
+| Query Layer     | `queries.py`                  | *Unassigned*                                                                                          | Todo        |                                    |
+| GUI             | `gui.py`, `app.py`            | Zhenyan                                                                                               | in Progress |                                    |
 
 **Data Insertion (details):**
   - **Juno:** Reviews insert, studio and award lists (DONE)
-  - **Unassigned:** Movies, People, Roles, Genres, Studios, Awards, Favorites
+  - **Yilin:** Movies insert, People insert, Roles insert, Genres insert, Studios insert, Users insert, Awards insert, Favorites insert(DONE)
 
 ---
 
