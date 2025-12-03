@@ -85,20 +85,24 @@ Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert int
   - `AWARD_LIST`: Major award names
 - **Usage:** Populate `Studio`, `Award`, `Produced_By`, and `Wins_Award` tables directly.
 
----
-
-## 4. Next Steps
-
-### Data Insertion: Complete Pending Functions
-
+### Data Insertion
+generated simulated datasets for studios.tsv and users.csv
+- **Output Files:**
+- `filtered_data/users.csv`
+- `filtered_data/studios.tsv`
+  
 Implement remaining insert functions in `insert_data.py`, including:
 - `insert_movies()` (from `movies.tsv`)
 - `insert_people()` (from `people.tsv`)
 - `insert_roles()` (from `principals.tsv`; link actors, directors, writers)
 - `insert_genres()` (extract & insert genres, manage `Has_Genre`)
-- `insert_studios()` (use `STUDIO_LIST`)
+- `insert_users()` (use `users.csv`)
+- `insert_studios()` (use `studios.tsv`)
 - `insert_awards()` (use `AWARD_LIST`, assign to movies)
 - `insert_favorites()` (random user–movie pairs)
+---
+
+## 4. Next Steps
 
 ### Query Functions (`queries.py`)
 - Each function: Accepts user input, runs SQL, returns rows for GUI.
