@@ -369,8 +369,11 @@ Educational project for MPCS 53001 Database Systems.
 
 ## Contributors
 
-- Zhenyan Li - GUI Development
+- Zhenyan Li - GUI Development & Queries Development 
 - Juno - Database Schema & Data Pipeline
+- Xiaoyu Zhang - DB Queries Development 
+- Yilin Long - Database Schema & Data Pipeline
+  
 
 ---
 
