@@ -6,7 +6,7 @@ SCHEMA_FILE = "schema.sql"
 
 config = {
     "user": "root",
-    "password": "",   # ← Guys, change it to your password if you have one:)
+    "password": "20021114bob",   # ← Guys, change it to your password if you have one:)
     "host": "localhost",
     "port": 3306
 }

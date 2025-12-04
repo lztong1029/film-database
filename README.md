@@ -1,141 +1,355 @@
-# film-database
+# Film Database - Global Film Database Explorer
 
-A database-centric project for storing, querying, and interacting with IMDb movie data and synthetic reviews, featuring a Python-powered GUI.
+A complete database application for exploring IMDb movie data with user reviews, featuring a Python GUI built with PySimpleGUI and MySQL backend.
 
 ---
 
 ## Table of Contents
 
-1. [Project Workflow](#project-workflow)
-2. [Team Responsibilities](#team-responsibilities)
-3. [Completed Features](#completed)
-4. [Next Steps](#next-steps)
-5. [Development & Run Order](#development-run-order)
+1. [Project Overview](#project-overview)
+2. [Features](#features)
+3. [Technology Stack](#technology-stack)
+4. [Installation & Setup](#installation--setup)
+5. [Usage](#usage)
+6. [Database Schema](#database-schema)
+7. [Queries](#queries)
+8. [Project Structure](#project-structure)
 
 ---
 
-## 1. Project Workflow
+## 1. Project Overview
 
-**Overall flow:**
+This project implements a comprehensive film database system that allows users to:
+- Browse and search movies by various criteria (genre, year, director, runtime, etc.)
+- View detailed information about actors, directors, and writers
+- Explore studio production data and award-winning films
+- Read and write movie reviews
+- Manage user favorite movies
+
+The application uses a MySQL database backend with a Python GUI frontend, providing an intuitive interface for complex database queries.
+
+---
+
+## 2. Features
+
+### Query Explorer
+- **12 Pre-built Queries** covering common search scenarios:
+  - Movies by genre and year
+  - Cast and crew information
+  - Studio analytics
+  - Award-winning films
+  - User reviews and favorites
+  - Runtime-based searches
+  - Birth year actor searches
+
+### Review Management
+- **Insert New Reviews** with automatic movie lookup by title
+- User-friendly form with validation
+- Real-time feedback on insertion success/failure
+
+### Data Visualization
+- Table view with sortable columns
+- Color-coded status messages
+- Clean, modern UI with PySimpleGUI
+
+---
+
+## 3. Technology Stack
+
+- **Database:** MySQL 8.0+
+- **Backend:** Python 3.8+
+  - `mysql-connector-python` for database connectivity
+  - Type hints for better code maintainability
+- **Frontend:** PySimpleGUI for cross-platform GUI
+- **Data Source:** IMDb datasets (movies from 2000+)
+
+---
+
+## 4. Installation & Setup
+
+### Prerequisites
+
+1. **MySQL Server** installed and running
+2. **Python 3.8+** installed
+
+### Step 1: Install Python Dependencies
+
+```bash
+pip install mysql-connector-python PySimpleGUI
 ```
-Create DB ("filmdb") → Prepare/filter data → `filtered_data/` → Insert into DB → Write queries → Build GUI → Run `app.py`
+
+### Step 2: Configure Database Connection
+
+Edit `backend/db.py` with your MySQL credentials:
+
+```python
+DB_HOST = "localhost"
+DB_PORT = 3306
+DB_USER = "root"
+DB_PASSWORD = "your_password"
+DB_NAME = "filmdb"
 ```
 
-**Main Phases:**
+### Step 3: Create Database and Load Data
 
-| Phase      | Key Files                  | Description                                                        |
-|------------|----------------------------|--------------------------------------------------------------------|
-| Database   | `schema.sql`, `init_db.py` | Create all SQL tables.                                             |
-| Data Insert| `insert_data.py`           | Insert IMDb and synthetic data into DB.                            |
-| Queries    | `queries.py`               | Python functions wrapping SQL for GUI calls.                       |
-| GUI        | `gui.py`, `app.py`         | User interface for searches, inserts, and result display.          |
+```bash
+# Initialize database schema
+python init_db.py
 
----
+# Load IMDb data into database
+python insert_db.py
+```
 
-## 2. Team Responsibilities
+### Step 4: Test Database Connection
 
-| Area            | Files/Functions                | Assigned To | Status     | Details/Notes                      |
-|-----------------|-------------------------------|-------------|------------|------------------------------------|
-| Database Schema | `schema.sql`, `init_db.py`    | Juno        | Done     |                                    |
-| Data Insertion  | `insert_data.py`              | Juno: Reviews Insert + Studio/Awards<br>(others: see below) | Partial | See [Next Steps](#next-steps)      |
-| Query Layer     | `queries.py`                  | *Unassigned*| Todo     |                                    |
-| GUI             | `gui.py`, `app.py`            | Zhenyan| in Progress     |                                    |
+```bash
+cd backend
+python db.py
+```
 
-**Data Insertion (details):**
-  - **Juno:** Reviews insert, studio and award lists (DONE)
-  - **Unassigned:** Movies, People, Roles, Genres, Studios, Awards, Favorites
+You should see:
+```
+✓ Successfully connected to MySQL Server
+✓ Database: filmdb
+✓ Tables: Movies, People, Actor, Director, ...
+```
 
----
+### Step 5: Test Queries
 
-## 3. Completed
+```bash
+cd backend
+python queries.py
+```
 
-### Data Filtering Pipeline (`filter_data.py`)
-
-- **Purpose:** Process and reduce IMDb raw data into cleaned, subsetted files in `filtered_data/`.
-- **Output Files:**
-  - `filtered_data/movies.tsv`
-  - `filtered_data/people.tsv`
-  - `filtered_data/principals.tsv`
-  - `filtered_data/crew.tsv`
-  - `filtered_data/movie_ids.txt`
-  - `filtered_data/people_ids.txt`
-- **Logic:**
-  1. Select movies from year **≥ 2000** (`title.basics.tsv`)  
-  2. Keep the first 50,000 recent titles  
-  3. Filter related tables via `tconst`  
-  4. Extract and filter all required `nconst`s for consistency
-
-### Review Processing & Insertion
-
-- **Source:** `filtered_data/imdb_reviews.csv` (Kaggle 50k IMDB reviews)
-- **Process:**
-  - Sample 5,000 reviews for speed
-  - Clean all HTML tags (`<br />`)
-  - Randomize:
-    - `userId`
-    - `movieId`
-    - `rating` (1–10)
-    - `post_time` (2019–2024)
-- **Insertion:** Fully implemented in `insert_data.py → insert_reviews()`
-
-### Studio & Award Dictionaries
-
-- Ready-made lists in `insert_data.py`:
-  - `STUDIO_LIST`: Popular studios
-  - `AWARD_LIST`: Major award names
-- **Usage:** Populate `Studio`, `Award`, `Produced_By`, and `Wins_Award` tables directly.
+All 12 queries should execute successfully.
 
 ---
 
-## 4. Next Steps
+## 5. Usage
 
-### Data Insertion: Complete Pending Functions
+### Launch the GUI
 
-Implement remaining insert functions in `insert_data.py`, including:
-- `insert_movies()` (from `movies.tsv`)
-- `insert_people()` (from `people.tsv`)
-- `insert_roles()` (from `principals.tsv`; link actors, directors, writers)
-- `insert_genres()` (extract & insert genres, manage `Has_Genre`)
-- `insert_studios()` (use `STUDIO_LIST`)
-- `insert_awards()` (use `AWARD_LIST`, assign to movies)
-- `insert_favorites()` (random user–movie pairs)
+```bash
+cd frontend
+python gui.py
+```
 
-### Query Functions (`queries.py`)
-- Each function: Accepts user input, runs SQL, returns rows for GUI.
-- Examples to implement:
-  - Find movies by year
-  - List actors in a movie
-  - Get top-rated movies
-  - Insert a user or a review
+### Query Explorer Tab
 
-### GUI Implementation
+1. Select a query from the list (e.g., "Q1: Movies in Science Fiction genre after a year")
+2. Enter parameters in the input fields
+3. Click **Run Query**
+4. View results in the table below
 
-- Display available queries
-- Show input fields as necessary
-- Link buttons to query functions
-- Display results in a table
-- Support inserting a new user or review
+### Insert Review Tab
+
+1. Enter **User ID** (valid IDs: 1-10)
+2. Enter **Movie Title** (exact title, e.g., "Ten Lives")
+3. Select **Rating** (1-10)
+4. Write **Review Content**
+5. Click **Submit Review**
+
+The application will automatically:
+- Look up the movie ID from the title
+- Validate all inputs
+- Insert the review into the database
+- Display success/error messages
+
+---
+
+## 6. Database Schema
+
+### Core Tables
+
+| Table | Description |
+|-------|-------------|
+| `Movies` | Film information (title, year, runtime) |
+| `People` | Actors, directors, writers |
+| `Actor` | Actor-specific data |
+| `Director` | Director-specific data |
+| `Writer` | Writer-specific data |
+| `Genre` | Film genres |
+| `Studio` | Production studios |
+| `Award` | Film awards |
+| `User` | System users |
+| `Review` | User movie reviews |
+
+### Relationship Tables
+
+| Table | Relationship |
+|-------|--------------|
+| `Acts_In` | Actor ↔ Movie |
+| `Directs` | Director ↔ Movie |
+| `Writes_Script_For` | Writer ↔ Movie |
+| `Has_Genre` | Movie ↔ Genre |
+| `Produced_By` | Movie ↔ Studio |
+| `Wins_Award` | Movie ↔ Award |
+| `Favorites` | User ↔ Movie |
 
 ---
 
-## 5. Development Run Order
+## 7. Queries
 
-To set up and run the project, follow this sequence:
+### Q1: Science Fiction Movies After Year
+Lists all Sci-Fi movies released after a specified year.
 
-1. **Create DB schema:**  
-   `python init_db.py`  
-2. **(Already done) Prepare filtered data:**  
-   `python filter_data.py`  
-3. **Complete all "insert" functions** in `insert_data.py`
-4. **Insert all data:**  
-   `python insert_data.py`
-5. **Write query functions:**  
-   Edit `queries.py`
-6. **Build GUI:**  
-   Edit `gui.py` and `app.py`
-7. **Launch the application:**  
-   ```
-   python app.py
-   ```
+**Parameters:** Year (e.g., 2010)
+
+### Q2: Actors in a Movie
+Shows all actors who starred in a specific movie.
+
+**Parameters:** Movie Title (e.g., "Ten Lives")
+
+### Q3: Reviews for a Movie
+Displays all user reviews for a specific movie with ratings and timestamps.
+
+**Parameters:** Movie Title (e.g., "Ten Lives")
+
+### Q4: Movies by Director
+Lists all movies directed by a specific director.
+
+**Parameters:** Director Name (e.g., "Christopher Nolan")
+
+### Q5: Average Rating by Studio
+Calculates average user rating for all movies produced by a studio.
+
+**Parameters:** Studio Name (e.g., "A24")
+
+### Q6: Best Picture Award Winners
+Finds all movies that won a "Best Picture" style award.
+
+**Parameters:** Award Keyword (e.g., "Best Picture")
+
+### Q7: Actors in Old Studios
+Lists actors associated with studios founded before a given year.
+
+**Parameters:** Cutoff Year (e.g., 1950)
+
+### Q8: Writers for a Director
+Shows all writers who wrote scripts for a specific director's movies.
+
+**Parameters:** Director Name (e.g., "Christopher Nolan")
+
+### Q9: User's Favorite Movies
+Lists all movies marked as favorites by a specific user.
+
+**Parameters:** Username (e.g., "smomery0")
+
+### Q10: Top 10 Movies by Genre
+Ranks the highest-rated movies in a specific genre.
+
+**Parameters:** Genre Name (e.g., "Horror")
+
+### Q11: Long Movies
+Finds movies with runtime longer than a specified duration.
+
+**Parameters:** Minimum Runtime in minutes (e.g., 180)
+
+### Q12: Actors Born in Year
+Lists all actors born in a specific year.
+
+**Parameters:** Birth Year (e.g., 1980)
 
 ---
+
+## 8. Project Structure
+
+```
+film-database/
+├── backend/
+│   ├── db.py                 # MySQL connection management
+│   └── queries.py            # SQL query implementations
+│
+├── frontend/
+│   └── gui.py                # PySimpleGUI application
+│
+├── filtered_data/            # Preprocessed data files
+│   ├── movie_ids.txt
+│   └── people_ids.txt
+│
+├── init_db.py                # Database schema creation
+├── insert_db.py              # Data loading script
+├── filter_data.py            # Data preprocessing script
+└── README.md                 # This file
+```
+
+### Key Files
+
+**Backend:**
+- [backend/db.py](backend/db.py) - Database connection and query execution functions
+- [backend/queries.py](backend/queries.py) - All 12 SQL queries + helper functions
+
+**Frontend:**
+- [frontend/gui.py](frontend/gui.py) - Complete GUI application with two tabs
+
+**Setup Scripts:**
+- [init_db.py](init_db.py) - Creates database schema
+- [insert_db.py](insert_db.py) - Loads IMDb data into database
+- [filter_data.py](filter_data.py) - Preprocesses raw IMDb data files
+
+---
+
+## Development Notes
+
+### Design Decisions
+
+1. **Two-Step Review Insertion:** Users enter movie titles instead of IDs. The application automatically looks up the movieId behind the scenes for better UX.
+
+2. **Real Database Only:** The application requires a working MySQL connection. It will exit with an error message if the database is unavailable.
+
+3. **Parameterized Queries:** All SQL queries use parameterized statements to prevent SQL injection attacks.
+
+4. **Connection Pooling:** Each query opens and closes its own database connection to avoid connection timeout issues.
+
+### Database Configuration
+
+The database contains:
+- **Movies:** Filtered to year 2000+ for relevance
+- **Users:** 10 test users (IDs 1-10)
+- **Reviews:** Synthetic review data for testing
+- **Relationships:** Full relational mapping between all entities
+
+---
+
+## Troubleshooting
+
+### "Failed to import queries module"
+- Check that `backend/queries.py` exists
+- Verify Python path includes backend directory
+- Install `mysql-connector-python`
+
+### "Error connecting to MySQL"
+- Verify MySQL server is running
+- Check credentials in `backend/db.py`
+- Ensure database "filmdb" exists
+
+### "No movie found with title"
+- Check exact spelling of movie title
+- Movie must exist in database (year 2000+)
+- For multiple matches, try including year in title
+
+### "Foreign key constraint fails"
+- For reviews: Use valid User ID (1-10)
+- For reviews: Movie must exist in database
+- Check database referential integrity
+
+---
+
+## License
+
+Educational project for MPCS 53001 Database Systems.
+
+---
+
+## Contributors
+
+- Zhenyan Li - GUI Development
+- Juno - Database Schema & Data Pipeline
+
+---
+
+## Acknowledgments
+
+- IMDb for movie datasets
+- PySimpleGUI for the GUI framework
+- MySQL for database management
