@@ -18,7 +18,7 @@ from typing import List, Tuple, Optional, Any
 DB_HOST = "localhost"
 DB_PORT = 3306
 DB_USER = "root"
-DB_PASSWORD = ""          # e.g. "mypassword" if you set one
+DB_PASSWORD = "mysqlpass166"          # e.g. "mypassword" if you set one
 DB_NAME = "filmdb"
 
 

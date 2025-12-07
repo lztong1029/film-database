@@ -202,7 +202,7 @@ QUERIES = {
     'Q3': {
         'label': 'Q3: All reviews for a specific movie',
         'params': [
-            {'name': 'movie_title', 'type': 'str', 'label': 'Movie Title:', 'default': 'Ten Lives'}
+            {'name': 'movie_title', 'type': 'str', 'label': 'Movie Title:', 'default': 'Flophouse'}
         ]
     },
     'Q4': {
@@ -288,7 +288,7 @@ def create_query_tab():
         [sg.Text('Select Query:', font=('Helvetica', 12, 'bold'), pad=(0, 5))],
         [sg.Listbox(values=query_list, size=(60, 12), key='-QUERY_LIST-',
                     enable_events=True, default_values=[query_list[0]],
-                    font=('Helvetica', 10))]
+                    font=('Helvetica', 11))]
     ]
 
     # Parameters section (dynamic based on selected query)
@@ -310,20 +310,33 @@ def create_query_tab():
     # Results section
     results_section = [
         [sg.Text('Query Results:', font=('Helvetica', 12, 'bold'), pad=(0, (15, 5)))],
-        [sg.Table(values=[['', '', '', '']],
-                  headings=['Col1', 'Col2', 'Col3', 'Col4'],
+        [sg.Table(values=[['', '', '', '', '', '']],
+                  headings=['Col1', 'Col2', 'Col3', 'Col4', 'Col5', 'Col6'],
+                  max_col_width=80,
                   auto_size_columns=True, display_row_numbers=False,
                   justification='left', num_rows=15, key='-RESULTS_TABLE-',
                   enable_events=False, expand_x=True, expand_y=True,
-                  font=('Helvetica', 10), header_font=('Helvetica', 10, 'bold'),
+                  font=('Helvetica', 11), header_font=('Helvetica', 11, 'bold'),
                   alternating_row_color='#E3F2FD')]
     ]
 
-    # Combine all sections
-    layout = [
-        [sg.Column(header_section + query_selection + params_section + run_button + results_section,
-                   scrollable=True, vertical_scroll_only=True, expand_x=True, expand_y=True)]
-    ]
+    # Combine all sections with a draggable sash so results panel is resizable
+    controls_col = sg.Column(
+        header_section + query_selection + params_section + run_button,
+        scrollable=True, vertical_scroll_only=True, expand_x=True, expand_y=False
+    )
+    results_col = sg.Column(
+        results_section,
+        expand_x=True, expand_y=True
+    )
+    pane = sg.Pane(
+        [controls_col, results_col],
+        orientation='vertical',
+        show_handle=True,
+        handle_size=10,
+        expand_x=True, expand_y=True
+    )
+    layout = [[pane]]
 
     return layout
 
@@ -398,7 +411,7 @@ def create_main_window():
 # HELPER FUNCTIONS
 # ============================================================================
 
-def _normalize_rows(rows, max_cols=4):
+def _normalize_rows(rows, max_cols=6):
     """
     Normalize rows to have exactly max_cols columns.
     Pads with empty strings or truncates as needed.
@@ -518,14 +531,23 @@ def handle_run_query(window, values):
 
         # Handle empty results
         if not rows or len(rows) == 0:
-            window['-RESULTS_TABLE-'].update(values=[['', '', '', '']])
+            window['-RESULTS_TABLE-'].update(values=[['', '', '', '', '', '']])
+            # Reset headers: use provided headers for available columns; '-' for the rest
+            try:
+                table_widget = window['-RESULTS_TABLE-'].Widget
+                for i in range(min(6, len(headers))):
+                    table_widget.heading(i, text=headers[i])
+                for j in range(len(headers), 6):
+                    table_widget.heading(j, text='-')
+            except Exception:
+                pass
             window['-QUERY_STATUS-'].update('No results found')
             sg.popup('Query completed successfully!\n\nNo results found.',
                      title='Query Success', auto_close=True, auto_close_duration=2)
             return
 
         # Normalize rows to 4 columns
-        normalized_rows = _normalize_rows(rows, max_cols=4)
+        normalized_rows = _normalize_rows(rows, max_cols=6)
 
         # Update the table with normalized data
         window['-RESULTS_TABLE-'].update(values=normalized_rows)
@@ -536,8 +558,11 @@ def handle_run_query(window, values):
         # Update table headings (only first 4 headers)
         try:
             table_widget = window['-RESULTS_TABLE-'].Widget
-            for i, header in enumerate(headers[:4]):
+            for i, header in enumerate(headers[:6]):
                 table_widget.heading(i, text=header)
+            # Set any remaining headers to '-'
+            for j in range(len(headers), 6):
+                table_widget.heading(j, text='-')
         except Exception:
             pass
 

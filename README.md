@@ -122,11 +122,11 @@ You should see:
 ### Step 5: Test Queries
 
 ```bash
-cd backend
-python queries.py
+# From project root
+python -m backend.queries
 ```
 
-All 12 queries should execute successfully.
+This verifies the module imports. Use the GUI to run the queries themselves.
 
 ---
 
@@ -135,8 +135,8 @@ All 12 queries should execute successfully.
 ### Launch the GUI
 
 ```bash
-cd frontend
-python gui.py
+# From project root
+python -m frontend.gui
 ```
 
 ### Query Explorer Tab
@@ -338,8 +338,9 @@ The database contains:
 ### "Failed to import queries module"
 
 - Check that `backend/queries.py` exists
-- Verify Python path includes backend directory
-- Install `mysql-connector-python`
+- Run from the project root using module invocation: `python -m frontend.gui` or `python -m backend.queries`
+- If running a script directly, set PYTHONPATH to the project root: `PYTHONPATH=. python frontend/gui.py`
+
 
 ### "Error connecting to MySQL"
 

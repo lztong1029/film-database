@@ -121,18 +121,17 @@ def query_Q4_movies_by_director(director_name: str) -> Tuple[List[Tuple], List[s
         rows, column_names
     """
     sql = """
-        SELECT
-            m.movieId,
-            m.primaryTitle,
-            m.startYear,
-            m.runtimeMinutes
-        FROM People   AS p
-        JOIN Director AS d  ON p.pId = d.directorId
-        JOIN DIRECTS AS di  ON d.directorId = di.directorId
-        JOIN Movies   AS m  ON di.movieId = m.movieId
-        WHERE p.primaryName = %s
-        ORDER BY m.startYear ASC, m.primaryTitle ASC
-    """
+          SELECT m.movieId,
+                 m.primaryTitle,
+                 m.startYear,
+                 m.runtimeMinutes
+          FROM People AS p
+                   JOIN Director AS d ON p.pId = d.directorId
+                   JOIN Directs AS di ON d.directorId = di.directorId
+                   JOIN Movies AS m ON di.movieId = m.movieId
+          WHERE p.primaryName = %s
+          ORDER BY m.startYear, m.primaryTitle
+          """
     return run_select_query(sql, (director_name,))
 
 
@@ -305,16 +304,13 @@ def query_Q7_actors_in_pre1950_studios(cutoff_year: int = 1950) -> Tuple[List[Tu
     """
     sql = """
         SELECT DISTINCT
-            p.pId       AS actorId,
+            p.pId        AS actorId,
             p.primaryName,
-            s.name      AS studioName,
+            s.name       AS studioName,
             s.foundedYear
-        FROM Studio AS s
-        JOIN Produced_By AS pb ON s.studioId = pb.studioId
-        JOIN Movies AS m       ON pb.movieId = m.movieId
-        JOIN Acts_In AS ai     ON m.movieId = ai.movieId
-        JOIN Actor AS a        ON ai.actorId = a.actorId
-        JOIN People AS p       ON a.actorId = p.pId
+        FROM People AS p
+        JOIN Actor  AS a ON p.pId = a.actorId
+        JOIN Studio AS s ON p.currentStudioId = s.studioId
         WHERE s.foundedYear < %s
         ORDER BY s.foundedYear ASC, p.primaryName ASC
         LIMIT 500
