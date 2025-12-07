@@ -12,7 +12,7 @@ The GUI then takes (column_names, rows) 来显示表格。
 """
 
 from typing import List, Tuple, Optional
-from db import run_select_query, run_insert_query
+from .db import run_select_query, run_insert_query
 
 
 # ---------------------------------------------------------------------------
@@ -471,5 +471,4 @@ def insert_review(
         else:
             return False, "No row inserted (check userId/movieId)."
     except Exception as e:
-        # run_insert_query 已经自己打印错误了，这里给 GUI 友好一点的 message
         return False, f"Database error: {e}"

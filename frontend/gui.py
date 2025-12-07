@@ -11,22 +11,9 @@ This GUI allows users to:
 
 import PySimpleGUI as sg
 from datetime import datetime
-import sys
-import os
-
-# Add backend directory to path for imports
-backend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'backend')
-sys.path.append(backend_path)
 
 # Import backend query functions
-try:
-    import queries as q
-    print("✓ Successfully imported queries module")
-except ImportError as e:
-    print(f"✗ Failed to import queries module: {e}")
-    print("  Please check that backend/queries.py exists and database is configured")
-    sys.exit(1)
-
+from backend import queries as q
 
 # ============================================================================
 # DATABASE QUERY FUNCTIONS

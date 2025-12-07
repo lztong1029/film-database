@@ -15,12 +15,11 @@ from typing import List, Tuple, Optional, Any
 # DATABASE CONFIGURATION
 # ============================================================================
 
-# ⚠️ 如果你后来给 MySQL 设置了密码，把 DB_PASSWORD 改成你的真实密码
 DB_HOST = "localhost"
 DB_PORT = 3306
 DB_USER = "root"
-DB_PASSWORD = "20021114bob"          # e.g. "mypassword" if you set one
-DB_NAME = "filmdb"        # 和 insert_db.py / schema.sql 里的 database 一致
+DB_PASSWORD = ""          # e.g. "mypassword" if you set one
+DB_NAME = "filmdb"
 
 
 # ============================================================================
@@ -47,7 +46,6 @@ def get_connection():
         )
 
         if connection.is_connected():
-            # 不每次都 spam 版本信息，测试时再看就好
             # db_info = connection.get_server_info()
             # print(f"Successfully connected to MySQL Server version {db_info}")
             return connection

@@ -13,7 +13,7 @@ def get_conn():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="20021114bob",    # TODO: modify password
+        password="",    # TODO: modify password
         database="filmdb"
     )
 

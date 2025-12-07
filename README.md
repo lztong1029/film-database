@@ -79,7 +79,7 @@ The application uses a MySQL database backend with a Python GUI frontend, provid
 ### Step 1: Install Python Dependencies
 
 ```bash
-pip install mysql-connector-python PySimpleGUI
+pip install -r requirements.txt
 ```
 
 ### Step 2: Configure Database Connection
@@ -371,7 +371,7 @@ Educational project for MPCS 53001 Database Systems.
 
 - Zhenyan Li - GUI Development & Queries Development 
 - Juno - Database Schema & Data Pipeline
-- Xiaoyu Zhang - DB Queries Development 
+- Xiaoyu Zhang - GUI & DB Queries Development 
 - Yilin Long - Database Schema & Data Pipeline
   
 
