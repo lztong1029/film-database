@@ -334,17 +334,16 @@ def query_Q8_writers_for_director(director_name: str = "Martin Scorsese") -> Tup
     """
     sql = """
         SELECT DISTINCT
-            pw.pId        AS writerId,
-            pw.primaryName AS writerName
-        FROM Writer AS w
-        JOIN Writes_Script_For AS wsf ON w.writerId = wsf.writerId
-        JOIN Movies AS m              ON wsf.movieId = m.movieId
-        JOIN Directs AS d             ON m.movieId = d.movieId
-        JOIN Director AS dir          ON d.directorId = dir.directorId
-        JOIN People AS pd             ON dir.directorId = pd.pId
-        JOIN People AS pw             ON w.writerId = pw.pId
+            pw.pId         AS writerId,
+            pw.primaryName AS writerName,
+            m.primaryTitle AS movieTitle
+        FROM People AS pd
+        JOIN Directs AS d ON d.directorId = pd.pId
+        JOIN Movies AS m ON m.movieId = d.movieId
+        JOIN Writes_Script_For AS wsf ON wsf.movieId = m.movieId
+        JOIN People AS pw ON pw.pId = wsf.writerId
         WHERE pd.primaryName = %s
-        ORDER BY pw.primaryName ASC
+        ORDER BY pw.primaryName ASC, m.primaryTitle ASC
     """
     return run_select_query(sql, (director_name,))
 
