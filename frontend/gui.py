@@ -34,19 +34,19 @@ def run_query(query_id, params):
     try:
         if query_id == "Q1":
             # Q1: Science Fiction movies after a year
-            min_year = params.get('year', 2010)
+            min_year = params.get('year', 2005)
             rows, headers = q.query_Q1_scifi_after_year(min_year)
             return headers, rows
 
         elif query_id == "Q2":
             # Q2: Actors in a specific movie
-            movie_title = params.get('movie_title', 'Inception')
+            movie_title = params.get('movie_title', 'Ten Lives')
             rows, headers = q.query_Q2_actors_in_movie(movie_title)
             return headers, rows
 
         elif query_id == "Q3":
             # Q3: Reviews for a specific movie
-            movie_title = params.get('movie_title', 'Dune')
+            movie_title = params.get('movie_title', 'Flophouse')
             rows, headers = q.query_Q3_reviews_for_movie(movie_title)
             return headers, rows
 
@@ -82,7 +82,7 @@ def run_query(query_id, params):
 
         elif query_id == "Q9":
             # Q9: Favorite movies for a user
-            username = params.get('username', 'smomery0')
+            username = params.get('username', 'gblurton9')
             rows, headers = q.query_Q9_favorite_movies_for_user(username)
             return headers, rows
 
@@ -190,7 +190,7 @@ QUERIES = {
     'Q1': {
         'label': 'Q1: Movies in Science Fiction genre after a year',
         'params': [
-            {'name': 'year', 'type': 'int', 'label': 'Year (release after):', 'default': '2010'}
+            {'name': 'year', 'type': 'int', 'label': 'Year (release after):', 'default': '2005'}
         ]
     },
     'Q2': {
@@ -238,7 +238,7 @@ QUERIES = {
     'Q9': {
         'label': 'Q9: Favorite movies for a user',
         'params': [
-            {'name': 'username', 'type': 'str', 'label': 'Username:', 'default': 'smomery0'}
+            {'name': 'username', 'type': 'str', 'label': 'Username:', 'default': 'gblurton9'}
         ]
     },
     'Q10': {
