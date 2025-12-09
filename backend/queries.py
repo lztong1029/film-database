@@ -366,20 +366,15 @@ def query_Q9_favorite_movies_for_user(username: str) -> Tuple[List[Tuple], List[
         SELECT
             m.movieId,
             m.primaryTitle,
-            m.releaseYear,
-            AVG(r.rating) AS avgRating
+            m.releaseYear
         FROM User AS u
         JOIN Favorites AS f ON u.userId = f.userId
-        JOIN Movies AS m    ON f.movieId = m.movieId
-        LEFT JOIN Review AS r ON m.movieId = r.movieId
+        JOIN Movies    AS m ON f.movieId = m.movieId
         WHERE u.userName = %s
-        GROUP BY m.movieId, m.primaryTitle, m.releaseYear
-        ORDER BY
-            avgRating IS NULL,
-            avgRating DESC,
-            m.primaryTitle ASC
+        ORDER BY m.primaryTitle ASC, m.releaseYear ASC
     """
     return run_select_query(sql, (username,))
+
 
 
 # ---------------------------------------------------------------------------
