@@ -181,6 +181,8 @@ def insert_movies():
 # =========================================
 def insert_people():
     conn, cursor = open_cursor()
+    cursor.execute("SELECT studioId FROM Studio")
+    studio_ids = [x[0] for x in cursor.fetchall()]
     with open("filtered_data/people.tsv", "r", encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter="\t")
         reader: csv.DictReader
@@ -201,7 +203,7 @@ def insert_people():
             birth_year = None if row.get("birthYear") == '' else int(float(row.get("birthYear")))
             death_year = None if row.get("deathYear") == '' else int(float(row.get("deathYear")))
             primary_profession = row.get("primaryProfession")
-            current_studio_id = None
+            current_studio_id = random.sample(studio_ids, 1)[0]
             rows.append((
                 p_id,
                 primary_name,
@@ -385,14 +387,14 @@ if __name__ == "__main__":
     # ---------- RUN ONLY ONCE ----------
     print("Inserting movies...")
     insert_movies()
+    print("Inserting studios...")
+    insert_studios()
     print("Inserting people...")
     insert_people()
     print("Inserting roles...")
     insert_roles()
     print("Inserting genres...")
     insert_genres()
-    print("Inserting studios...")
-    insert_studios()
     print("Inserting awards...")
     insert_awards()
     print("Inserting users...")
